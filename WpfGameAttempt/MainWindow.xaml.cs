@@ -23,6 +23,29 @@ namespace WpfGameAttempt
         public MainWindow()
         {
             InitializeComponent();
+            FocusManager.SetFocusedElement(this, UsernameTextBox);
+        }
+
+        public void login_click(object sender, RoutedEventArgs e)
+        {
+            if (verifyLogin())
+            {
+                MainMenu nextPage = new MainMenu();
+                nextPage.Show();
+                this.Close();
+            }
+        }
+
+        public void new_user_click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        public bool verifyLogin()
+        {
+            string username = UsernameTextBox.Text;
+            string password = MyPasswordBox.Password;
+            return true;
         }
     }
 }
