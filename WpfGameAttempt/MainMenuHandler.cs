@@ -72,7 +72,7 @@ namespace WpfGameAttempt
             InputIterator iterator = new InputIterator(archivedInput, input);
             archivedCommand = lib.create;
 
-            currentText = "What would you like to create? Your options include: \ncharacter\ndungeon";
+            currentText = "What would you like to create? Your options include: \n- character\n- dungeon";
             if (iterator.hasNext())
             {
                 switch (iterator.next())
@@ -86,7 +86,7 @@ namespace WpfGameAttempt
                         quit();
                         return;
                     default:
-                        currentText = "Not a valid option. Please enter what you would like to create";
+                        currentText += "\nNot a valid option.";
                         archivedInput = iterator.getWalkedMinusOne();
                         return;
                 }
@@ -99,7 +99,7 @@ namespace WpfGameAttempt
 
         public void createCharacter(InputIterator iterator)
         {
-            currentText += "\nPlease enter a name for your character.";
+            currentText = "Please enter a name for your character.";
             string name;
             if (iterator.hasNext())
             {
@@ -109,14 +109,13 @@ namespace WpfGameAttempt
                     quit();
                     return;
                 }
-                currentText += "\n" + name;
             } else
             {
                 archivedInput = iterator.getWalked();
                 return;
             }
 
-            currentText += "\nPlease enter your character's class. Your options are: \nmage \nwarrior \nhunter";
+            currentText = "Please enter your character's class. Your options are: \n- mage \n- warrior \n- hunter";
 
             if (iterator.hasNext())
             {

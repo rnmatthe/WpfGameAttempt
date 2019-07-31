@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Media;
 
 namespace WpfGameAttempt
 {
@@ -21,12 +22,22 @@ namespace WpfGameAttempt
     {
 
         private MainMenuHandler myHandler;
+        private MediaPlayer player;
+        //private string musicPath = "C:\\Users\\Rachel\\Music\\Lovers_Song.mp3";
+        private string musicPath = "Lovers_Song.mp3";
 
         public MainMenu()
         {
             InitializeComponent();
             myHandler = new MainMenuHandler();
             FocusManager.SetFocusedElement(this, InputTextBox);
+            //SoundPlayer player = new SoundPlayer("C:\\Users\\Rachel\\Music\\Lovers_Song.mp3");
+            //player.PlayLooping();
+
+            player = new MediaPlayer();
+            player.Open(new Uri(musicPath, UriKind.Relative));
+            player.MediaEnded += new EventHandler(Media_Ended);
+            player.Play();
         }
 
         public void key_down(object sender, KeyEventArgs e)
@@ -42,6 +53,12 @@ namespace WpfGameAttempt
         {
             MyTextBlock.Text = myHandler.getText();
             InputTextBox.Text = "";
+        }
+
+        private void Media_Ended(object sender, EventArgs e)
+        {
+            player.Open(new Uri(musicPath, UriKind.Relative));
+            player.Play();
         }
     }
 }
