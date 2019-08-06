@@ -18,9 +18,7 @@ namespace WpfGameAttempt
 
         private string defaultText = "Welcome to the main menu!\nFrom here you can do all sorts of things!";
         private string currentText;
-        private ArrayList archivedInput;
-        private Command archivedCommand;
-        private CommandLibrary lib;
+        
 
         public string getText()
         {
@@ -38,38 +36,21 @@ namespace WpfGameAttempt
 
             ArrayList brokenInput = new ArrayList(input.Split());
 
-            Command command;
+            Command command = identifyCommand(brokenInput);
 
-            //if there's an archived command:
-            if(archivedCommand != null)
-            {
-                command = archivedCommand;
-            } else
-            {
-                command = identifyCommand(brokenInput[0].ToString());
-                //you must have enetered the name of a command, so remove that from the input
-                brokenInput.RemoveAt(0);
-            }
+            iterator = new InputIterator(archivedInput, brokenInput);
 
-            //if you entered a command that doesn't seek input but provide(d) input
-            //if you didn't enter a command and there isn't an archived one
-            if(command == null || (!command.seeksInput && brokenInput.Count > 0) || (!command.seeksInput && archivedInput != null))
-            {
-                currentText = "Not valid input.";
-            }
-
-            if(command == lib.options)
+            if (command == lib.options)
             {
                 optionsCommand();
             } else if (command == lib.create)
             {
-                createCommand(brokenInput);
+                createCommand();
             }
         }
 
-        public void createCommand(ArrayList input)
+        public void createCommand()
         {
-            InputIterator iterator = new InputIterator(archivedInput, input);
             archivedCommand = lib.create;
 
             currentText = "What would you like to create? Your options include: \n- character\n- dungeon";

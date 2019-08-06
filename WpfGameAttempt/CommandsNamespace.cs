@@ -69,6 +69,10 @@ namespace WpfGameAttempt
         {
 
             public ArrayList validCommands;
+            public ArrayList archivedInput;
+            public Command archivedCommand;
+            public CommandLibrary lib;
+            public InputIterator iterator;
 
             public Commandable()
             {
@@ -76,17 +80,37 @@ namespace WpfGameAttempt
             }
 
 
-            public Command identifyCommand(string str)
+            public Command identifyCommand(ArrayList brokenInput)
             {
-                foreach (Command command in validCommands)
+                Command command = null;
+
+                //if there's an archived command:
+                if (archivedCommand != null)
                 {
-                    if (command.identify(str))
+                    command = archivedCommand;
+                }
+                else
+                {   //the first word must be a command
+                    foreach (Command com in validCommands)
                     {
-                        return command;
+                        if (com.identify(brokenInput[0].ToString()))
+                        {
+                            command = com;
+                        }
                     }
+                    //remove name of command from the input
+                    brokenInput.RemoveAt(0);
                 }
 
-                return null;
+                //if you entered a command that doesn't seek input but provide(d) input
+                //if you didn't enter a command and there isn't an archived one
+                if (command == null || (!command.seeksInput && brokenInput.Count > 0) || (!command.seeksInput && archivedInput != null))
+                {
+                    return null;
+                }
+                
+
+                return command;
             }
         }
 
